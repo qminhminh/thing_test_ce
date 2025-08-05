@@ -54,7 +54,7 @@ class NotificationsList extends StatelessWidget {
       itemBuilder: (context, index) => InkWell(
         onTap: () {
           NotificationService.handleClickOnNotification(
-            notifications[index].message.data,
+            notifications[index].message,
             tbContext,
           );
         },

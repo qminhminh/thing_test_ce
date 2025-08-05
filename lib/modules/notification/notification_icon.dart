@@ -12,7 +12,7 @@ class NotificationIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconData = _toIcon(notification.message.data);
+    final iconData = _toIcon(notification.message);
 
     return iconData;
   }
@@ -36,7 +36,7 @@ class NotificationIcon extends StatelessWidget {
   }
 
   Widget _toIcon(Map<String, dynamic> data) {
-    final imageData = notification.message.data['icon.icon'];
+    final imageData = data['icon.icon'];
 
     if (imageData != null) {
       if (imageData!.contains('mdi')) {

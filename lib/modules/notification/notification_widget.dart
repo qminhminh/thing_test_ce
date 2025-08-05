@@ -24,10 +24,10 @@ class NotificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final diff = DateTime.now().difference(notification.message.sentTime!);
+    final diff = DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(notification.message['sentTime'] ?? DateTime.now().millisecondsSinceEpoch));
     final severity = AlarmSeverity.values.firstWhereOrNull(
       (s) {
-        return notification.message.data['info.alarmSeverity']
+        return notification.message['data']['info.alarmSeverity']
                 ?.toUpperCase()
                 .compareTo(s.toString().split('.').last) ==
             0;
@@ -68,7 +68,7 @@ class NotificationWidget extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 7),
                           child: Text(
-                            notification.message.notification?.title ?? '',
+                            notification.message['notification']?['title'] ?? '',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -78,7 +78,7 @@ class NotificationWidget extends StatelessWidget {
                       ),
                       Flexible(
                         child: Html(
-                          data: notification.message.notification?.body ?? '',
+                          data: notification.message['notification']?['body'] ?? '',
                         ),
                       ),
                     ],
@@ -107,7 +107,7 @@ class NotificationWidget extends StatelessWidget {
                           height: 50,
                           child: IconButton(
                             onPressed: () => onReadNotification(
-                              notification.message.messageId!,
+                              notification.message['messageId']!,
                             ),
                             icon: Icon(
                               Icons.check_circle_outline,

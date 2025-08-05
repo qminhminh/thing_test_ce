@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:thingsboard_app/core/context/tb_context.dart';
 import 'package:thingsboard_app/core/context/tb_context_widget.dart';
@@ -236,7 +236,7 @@ class MoreMenuItem {
               path: '/notifications',
               showAdditionalIcon: true,
               additionalIcon: _notificationNumberWidget(),
-              disabled: Firebase.apps.isEmpty,
+              disabled: true, // Firebase.apps.isEmpty,
               disabledReasonMessage: 'Firebase is not configured.'
                   ' Please refer to the official Firebase documentation for'
                   ' guidance on how to do so.',
@@ -263,7 +263,7 @@ class MoreMenuItem {
               path: '/notifications',
               showAdditionalIcon: true,
               additionalIcon: _notificationNumberWidget(),
-              disabled: Firebase.apps.isEmpty,
+              disabled: true, // Firebase.apps.isEmpty,
               disabledReasonMessage: 'Notifications are not configured. '
                   'Please contact your system administrator.',
             )
@@ -281,7 +281,7 @@ class MoreMenuItem {
               path: '/notifications',
               showAdditionalIcon: true,
               additionalIcon: _notificationNumberWidget(),
-              disabled: Firebase.apps.isEmpty,
+              disabled: true, // Firebase.apps.isEmpty,
               disabledReasonMessage: 'Notifications are not configured. '
                   'Please contact your system administrator.',
             ),

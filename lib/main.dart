@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -28,15 +28,16 @@ void main() async {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
 
-  try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  // Firebase is disabled for now
+  // try {
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
 
-    FirebaseMessaging.onBackgroundMessage(backgroundHandler);
-  } catch (e) {
-    log(e.toString());
-  }
+  //   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  // } catch (e) {
+  //   log(e.toString());
+  // }
 
   runApp(ThingsboardApp());
 }

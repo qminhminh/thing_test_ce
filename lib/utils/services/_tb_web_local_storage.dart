@@ -12,12 +12,17 @@ class TbWebLocalStorage implements TbStorage {
   }
 
   @override
-  Future<String?> getItem(String key) async {
-    return _localStorage[key];
+  Future<dynamic>? getItem(String key, {dynamic defaultValue}) async {
+    return _localStorage[key] ?? defaultValue;
   }
 
   @override
-  Future<void> setItem(String key, String value) async {
-    _localStorage[key] = value;
+  Future<void> setItem(String key, dynamic value) async {
+    _localStorage[key] = value.toString();
+  }
+
+  @override
+  Future<bool> containsKey(String key) async {
+    return _localStorage.containsKey(key);
   }
 }

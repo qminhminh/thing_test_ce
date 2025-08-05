@@ -42,7 +42,7 @@ class _NotificationSlidableWidget extends State<NotificationSlidableWidget> {
     }
 
     return Slidable(
-      key: ValueKey(widget.notification.message.messageId),
+      key: ValueKey(widget.notification.message['messageId']),
       child: widget.child,
       startActionPane: widget.notification.read
           ? null
@@ -52,7 +52,7 @@ class _NotificationSlidableWidget extends State<NotificationSlidableWidget> {
               children: [
                 SlidableAction(
                   onPressed: (context) => widget.onReadNotification(
-                    widget.notification.message.messageId!,
+                    widget.notification.message['messageId']!,
                   ),
                   backgroundColor: Color(0xFF198038),
                   foregroundColor: Colors.white,
@@ -71,7 +71,7 @@ class _NotificationSlidableWidget extends State<NotificationSlidableWidget> {
           SlidableAction(
             onPressed: (context) {
               widget.onClearNotification(
-                widget.notification.message.messageId!,
+                widget.notification.message['messageId']!,
               );
             },
             backgroundColor: Color(0xFFD12730).withOpacity(0.94),
@@ -93,12 +93,12 @@ class _NotificationSlidableWidget extends State<NotificationSlidableWidget> {
   List<Widget> _buildAlarmRelatedButtons(NotificationModel notification) {
     final items = <Widget>[];
 
-    final type = notification.message.data['notificationType'];
+    final type = notification.message['data']['notificationType'];
     if (type?.toUpperCase().contains('ALARM') == true) {
       final status = AlarmStatus.values.byName(
-        notification.message.data['info.alarmStatus'],
+        notification.message['data']['info.alarmStatus'],
       );
-      final id = notification.message.data['info.alarmId'];
+      final id = notification.message['data']['info.alarmId'];
 
       if ([AlarmStatus.CLEARED_UNACK, AlarmStatus.ACTIVE_UNACK]
           .contains(status)) {
@@ -157,13 +157,13 @@ class _NotificationSlidableWidget extends State<NotificationSlidableWidget> {
             .getAlarmService()
             .getAlarmInfo(alarmId);
 
-        widget.notification.message.data['info.alarmStatus'] =
+        widget.notification.message['data']['info.alarmStatus'] =
             newAlarm!.status!.name;
       } catch (_) {}
 
       setState(() {
         loading = false;
-        widget.onReadNotification(widget.notification.message.messageId!);
+        widget.onReadNotification(widget.notification.message['messageId']!);
       });
     }
   }
@@ -185,13 +185,13 @@ class _NotificationSlidableWidget extends State<NotificationSlidableWidget> {
             .getAlarmService()
             .getAlarmInfo(alarmId);
 
-        widget.notification.message.data['info.alarmStatus'] =
+        widget.notification.message['data']['info.alarmStatus'] =
             newAlarm!.status!.name;
       } catch (_) {}
 
       setState(() {
         loading = false;
-        widget.onReadNotification(widget.notification.message.messageId!);
+        widget.onReadNotification(widget.notification.message['messageId']!);
       });
     }
   }

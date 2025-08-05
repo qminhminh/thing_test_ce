@@ -34,13 +34,13 @@ class UrlPage extends StatelessWidget {
           ? const Center(child: Text('Not implemented!'))
           : InAppWebView(
               initialUrlRequest: URLRequest(
-                url: Uri.parse(url),
+                url: WebUri(url),
               ),
-              androidOnPermissionRequest:
-                  (controller, origin, resources) async {
-                return PermissionRequestResponse(
-                  resources: resources,
-                  action: PermissionRequestResponseAction.GRANT,
+              onPermissionRequest:
+                  (controller, permissionRequest) async {
+                return PermissionResponse(
+                  resources: permissionRequest.resources,
+                  action: PermissionResponseAction.GRANT,
                 );
               },
             ),
