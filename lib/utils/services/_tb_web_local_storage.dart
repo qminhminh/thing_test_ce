@@ -12,8 +12,8 @@ class TbWebLocalStorage implements TbStorage {
   }
 
   @override
-  Future<dynamic>? getItem(String key, {dynamic defaultValue}) async {
-    return _localStorage[key] ?? defaultValue;
+  Future<String?> getItem(String key) async {
+    return _localStorage[key];
   }
 
   @override

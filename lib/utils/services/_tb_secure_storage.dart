@@ -12,8 +12,8 @@ class TbSecureStorage implements TbStorage {
   }
 
   @override
-  Future<dynamic>? getItem(String key, {dynamic defaultValue}) async {
-    return await flutterStorage.read(key: key) ?? defaultValue;
+  Future<String?> getItem(String key) async {
+    return await flutterStorage.read(key: key);
   }
 
   @override
