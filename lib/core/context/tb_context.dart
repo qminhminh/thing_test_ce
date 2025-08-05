@@ -122,7 +122,15 @@ class TbContext implements PopEntry {
 
   final ValueNotifier<bool> canPopNotifier = ValueNotifier<bool>(false);
 
-  PopInvokedCallback get onPopInvoked => onPopInvokedImpl;
+  @override
+  void onPopInvoked(bool didPop) {
+    onPopInvokedImpl(didPop);
+  }
+
+  @override
+  void onPopInvokedWithResult(bool didPop, dynamic result) {
+    onPopInvokedImpl(didPop);
+  }
 
   GlobalKey<ScaffoldMessengerState> messengerKey =
       GlobalKey<ScaffoldMessengerState>();

@@ -354,7 +354,7 @@ class _TwoFactorAuthenticationPageState
           errorText: '${S.of(context).verificationCodeInvalid}'),
       FormBuilderValidators.equalLength(maxLengthInput,
           errorText: '${S.of(context).verificationCodeInvalid}'),
-      FormBuilderValidators.match(pattern,
+      FormBuilderValidators.match(RegExp(pattern),
           errorText: '${S.of(context).verificationCodeInvalid}')
     ];
 
