@@ -62,7 +62,7 @@ class _HomePageState extends TbContextState<HomePage>
       ),
       body: Builder(builder: (context) {
         if (dashboardState) {
-          return _buildDashboardHome(context, homeDashboard);
+          return _buildHomeDashboardWithRetry(context, homeDashboard);
         } else {
           return _buildDefaultHome(context);
         }
@@ -81,6 +81,53 @@ class _HomePageState extends TbContextState<HomePage>
     } else {
       return DashboardsGridWidget(tbContext);
     }
+  }
+
+  Widget _buildHomeDashboardWithRetry(BuildContext context, HomeDashboardInfo? dashboard) {
+    if (dashboard != null) {
+      return _buildDashboardHome(context, dashboard);
+    } else {
+      return _buildHomeDashboardError(context);
+    }
+  }
+
+  Widget _buildHomeDashboardError(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.error_outline,
+            size: 64,
+            color: Colors.grey[400],
+          ),
+          SizedBox(height: 16),
+          Text(
+            'Không thể tải dashboard',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              color: Colors.grey[600],
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Vui lòng kiểm tra kết nối mạng và thử lại',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Colors.grey[500],
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () async {
+              await tbContext.retryLoadHomeDashboard();
+              setState(() {}); // Rebuild to show dashboard if loaded
+            },
+            icon: Icon(Icons.refresh),
+            label: Text('Thử lại'),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildSysAdminHome(BuildContext context) {

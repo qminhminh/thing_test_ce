@@ -52,7 +52,7 @@ class ThingsboardApp extends StatefulWidget {
 }
 
 class ThingsboardAppState extends State<ThingsboardApp>
-    with TickerProviderStateMixin
+    with TickerProviderStateMixin, WidgetsBindingObserver
     implements TbMainDashboardHolder {
   final TwoPageViewController _mainPageViewController = TwoPageViewController();
   final MainDashboardPageController _mainDashboardPageController =
@@ -64,7 +64,29 @@ class ThingsboardAppState extends State<ThingsboardApp>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     appRouter.tbContext.setMainDashboardHolder(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      // App resumed from background, check session and refresh app state
+      if (appRouter.tbContext.isAuthenticated) {
+        appRouter.tbContext.checkAndFixSession().then((_) {
+          if (appRouter.tbContext.isAuthenticated) {
+            appRouter.tbContext.refreshAppState();
+          }
+        });
+      }
+    }
   }
 
   @override
@@ -157,6 +179,7 @@ class ThingsboardAppState extends State<ThingsboardApp>
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        debugShowCheckedModeBanner: false,
         supportedLocales: S.delegate.supportedLocales,
         onGenerateTitle: (BuildContext context) => S.of(context).appTitle,
         themeMode: ThemeMode.light,

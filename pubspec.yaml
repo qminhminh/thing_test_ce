@@ -28,12 +28,12 @@ dependencies:
 #  permission_handler: ^8.0.0+2
 #  path_provider: ^2.0.2
   url_launcher: ^6.3.2
-  image_picker: ^1.0.4
+  image_picker: ^1.0.7
   mime: ^1.0.4
   logger: ^2.0.2+1
   qr_code_scanner: ^1.0.1
-  device_info_plus: ^9.1.1
-  geolocator: ^10.1.0
+  device_info_plus: ^10.1.0
+  geolocator: ^11.0.0
   material_design_icons_flutter: ^7.0.7296
   package_info_plus: ^8.0.2
   dart_jsonwebtoken: ^2.12.1

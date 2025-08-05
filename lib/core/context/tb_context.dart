@@ -291,10 +291,14 @@ class TbContext implements PopEntry {
             homeDashboard =
                 await tbClient.getDashboardService().getHomeDashboardInfo();
           } catch (e) {
+            log.warn('Failed to load user details or home dashboard: $e');
+            // Don't logout on connection errors, just set to null
             if (!_isConnectionError(e)) {
               logout();
             } else {
-              rethrow;
+              // For connection errors, set to null but don't logout
+              userDetails = null;
+              homeDashboard = null;
             }
           }
         }
@@ -363,11 +367,77 @@ class TbContext implements PopEntry {
   bool get hasOAuthClients =>
       oauth2ClientInfos != null && oauth2ClientInfos!.isNotEmpty;
 
+  Future<void> retryLoadHomeDashboard() async {
+    if (tbClient.isAuthenticated() && !tbClient.isPreVerificationToken()) {
+      try {
+        log.debug('Retrying to load home dashboard...');
+        homeDashboard = await tbClient.getDashboardService().getHomeDashboardInfo();
+        log.debug('Successfully loaded home dashboard');
+        // Force rebuild of current state if it exists
+        if (currentState != null) {
+          currentState!.setState(() {});
+        }
+      } catch (e) {
+        log.warn('Failed to retry load home dashboard: $e');
+      }
+    }
+  }
+
+  Future<void> refreshAppState() async {
+    if (tbClient.isAuthenticated() && !tbClient.isPreVerificationToken()) {
+      try {
+        log.debug('Refreshing app state...');
+        // Reload user details and home dashboard with timeout
+        if (tbClient.getAuthUser()!.userId != null) {
+          userDetails = await tbClient.getUserService().getUser();
+          homeDashboard = await tbClient.getDashboardService().getHomeDashboardInfo();
+        }
+        log.debug('Successfully refreshed app state');
+        // Force rebuild of current state if it exists
+        if (currentState != null) {
+          currentState!.setState(() {});
+        }
+        // Ensure we're on the home page
+        await _ensureHomeNavigation();
+      } catch (e) {
+        log.warn('Failed to refresh app state: $e');
+        // Even if refresh fails, try to ensure we're on home page
+        await _ensureHomeNavigation();
+      }
+    }
+  }
+
+  Future<void> _ensureHomeNavigation() async {
+    if (currentState != null) {
+      // Check if we're not on home page, navigate to home
+      if (!isHomePage()) {
+        log.debug('Not on home page, navigating to home...');
+        navigateTo('/home',
+            replace: true,
+            transition: TransitionType.fadeIn,
+            transitionDuration: Duration(milliseconds: 300));
+      }
+    }
+  }
+
+  Future<void> checkAndFixSession() async {
+    if (tbClient.isAuthenticated() && !tbClient.isPreVerificationToken()) {
+      try {
+        // Check if session is still valid by making a simple API call
+        await tbClient.getUserService().getUser();
+        log.debug('Session is valid');
+      } catch (e) {
+        log.warn('Session appears to be invalid, logging out: $e');
+        logout();
+      }
+    }
+  }
+
   Future<void> updateRouteState() async {
     if (currentState != null) {
       if (tbClient.isAuthenticated() && !tbClient.isPreVerificationToken()) {
         var defaultDashboardId = _defaultDashboardId();
-        if (defaultDashboardId != null) {
+        if (defaultDashboardId != null && homeDashboard != null) {
           bool fullscreen = _userForceFullscreen();
           if (!fullscreen) {
             await navigateToDashboard(defaultDashboardId, animate: false);
@@ -380,6 +450,7 @@ class TbContext implements PopEntry {
                 replace: true, transition: TransitionType.fadeIn);
           }
         } else {
+          // Always navigate to home even if homeDashboard is null
           navigateTo('/home',
               replace: true,
               transition: TransitionType.fadeIn,

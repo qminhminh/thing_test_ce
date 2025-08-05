@@ -1,5 +1,5 @@
 abstract class ThingsboardAppConstants {
-  static final thingsBoardApiEndpoint = 'https://tamanh.invitech.com.vn/';
+  static final thingsBoardApiEndpoint = 'https://taphoquang.invitech.com.vn';
   static final thingsboardOAuth2CallbackUrlScheme = 'org.thingsboard.app.auth';
 
   /// Not for production (only for debugging)
