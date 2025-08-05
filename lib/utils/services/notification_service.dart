@@ -1,10 +1,9 @@
 // Firebase is disabled for now - stub implementation
 import 'dart:async';
-import 'dart:convert';
+
 
 import 'package:thingsboard_app/core/context/tb_context.dart';
-import 'package:thingsboard_app/modules/notification/notification_model.dart';
-import 'package:thingsboard_app/utils/services/_tb_secure_storage.dart';
+
 import 'package:thingsboard_client/thingsboard_client.dart';
 
 // Stub for background handler

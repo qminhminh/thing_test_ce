@@ -1,3 +1,5 @@
+// ignore_for_file: override_on_non_overriding_member
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
