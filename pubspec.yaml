@@ -98,4 +98,6 @@ flutter_intl:
   enabled: true
 
 dependency_overrides:
-  thingsboard_client: 1.1.0
+  geolocator_apple: ^2.2.0
+  image_picker_ios: ^0.8.12+2
+  geolocator_android: ^4.4.0
